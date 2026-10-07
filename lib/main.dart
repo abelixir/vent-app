@@ -1,49 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-
-import 'models/note.dart';
+import 'package:flutter/services.dart';
+import 'theme/app_theme.dart';
 import 'screens/home_screen.dart';
 
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Make status bar dark-mode friendly
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+    ),
+  );
 
-void main() async {
-
-
-WidgetsFlutterBinding.ensureInitialized();
-
-
-await Hive.initFlutter();
-
-
-Hive.registerAdapter(NoteAdapter());
-
-
-await Hive.openBox<Note>("notes");
-
-
-runApp(MyApp());
-
+  runApp(const VentApp());
 }
 
+class VentApp extends StatelessWidget {
+  const VentApp({super.key});
 
-
-class MyApp extends StatelessWidget {
-
-
-@override
-Widget build(BuildContext context){
-
-return MaterialApp(
-
-debugShowCheckedModeBanner:false,
-
-theme:ThemeData(
-primarySwatch:Colors.blue,
-),
-
-home:HomeScreen(),
-
-);
-
-}
-
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Vent',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.darkTheme,          // we will create this next
+      home: const HomeScreen(),
+    );
+  }
 }
